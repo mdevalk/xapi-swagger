@@ -1,0 +1,73 @@
+# Example YAML to get you started quickly.
+# Be aware that YAML has indentation based scoping.
+# Code completion support is available so start typing for available options.
+swagger: '2.0'
+
+# This is your document metadata
+info:
+  version: "0.0.1"
+  title: "Experience API"
+  description: "The Experience API is a service that allows for statements of experience to be delivered to and stored securely in a Learning Record Store (LRS). These statements of experience are typically learning experiences, but the API can address statements of any kind of experience. The Experience API is dependent on Activity Providers to create and track these learning experiences; this specification provides a data model and associated components on how to accomplish these tasks."
+
+# Describe your paths here
+paths:
+  # This is a path endpoint.
+  /statements:
+    # This is a HTTP operation
+    post:
+      # Describe this verb here. Note: you can use markdown
+      description: |
+        Accepts xAPI statements
+      # This is array of GET operation parameters:
+      parameters:
+        # An example parameter that is in query and is required
+        - name: id
+          in: query
+          description: UUID assigned by LRS if not set by the Activity Provider
+          required: true
+          type: string
+          format: uuid
+        - name: actor
+          in: query
+          description: Who the Statement is about, as an Agent or Group Object
+          type: string
+        - name: verb
+          in: query
+          description: Action of the Learner or Team Object
+          type: string
+        - name: object
+          in: query
+          description: Activity, Agent, or another Statement that is the Object of the Statement
+          type: string
+      # Expected responses for this operation:
+      responses:
+        200:
+            description: Successful response
+            schema:
+              $ref: '#/definitions/Result'
+
+definitions:
+  Result:
+    type: object
+    required:
+    - message
+    - code
+    properties:
+      message:
+        type: string
+      code:
+        type: string
+      score:
+        type: string
+      success:
+        type: boolean
+      completion:
+        type: boolean
+      response:
+        type: string
+      duration:
+        type: string #duration is not yet part of the open api standard
+  Statement:
+    properties:
+      id:
+        type: string
